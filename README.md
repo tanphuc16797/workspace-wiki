@@ -104,17 +104,16 @@ Each workspace includes:
 **Short one-liners from release assets:**
 
 ```bash
-curl -fsSL https://github.com/<owner>/<repo>/releases/download/<tag>/install.sh | sh
+curl -fsSL https://github.com/tanphuc16797/workspace-wiki/releases/download/<tag>/install.sh | sh
 ```
 
 PowerShell (Windows):
 
 ```powershell
-iwr https://github.com/<owner>/<repo>/releases/download/<tag>/install.ps1 -UseBasicParsing | iex
+iwr https://github.com/tanphuc16797/workspace-wiki/releases/download/<tag>/install.ps1 -UseBasicParsing | iex
 ```
 
-> Replace `<owner>`, `<repo>`, and `<tag>` with your actual public repository values before publishing docs.
-
+> Replace `<tag>` with a real release tag (for example: `v1.2.0`).
 Or install from source in the current repository:
 
 ```bash
