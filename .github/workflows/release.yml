@@ -73,7 +73,11 @@ jobs:
             exit 1
           fi
 
-          (cd "$repo_root" && sh scripts/install-to-claude.sh)
+          if ! command -v bash >/dev/null 2>&1; then
+            echo "ERROR: need bash" >&2
+            exit 1
+          fi
+          (cd "$repo_root" && bash scripts/install-to-claude.sh)
           claude_dir="${HOME}/.claude"
           mkdir -p "$claude_dir"
           cat > "$claude_dir/wiki-install-meta.json" <<META
