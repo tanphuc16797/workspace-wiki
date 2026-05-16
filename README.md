@@ -197,8 +197,8 @@ This repo uses workflow [deploy-pages.yml](.github/workflows/deploy-pages.yml):
   2. collect `onboarding/` and `release/` for Pages artifact
   3. deploy to `github-pages` environment
 - Published paths:
-  - `.../<repo>/onboarding/...`
-  - `.../<repo>/release/...`
+  - `https://tanphuc16797.github.io/workspace-wiki/onboarding/...`
+  - `https://tanphuc16797.github.io/workspace-wiki/release/...`
 
 Enable Pages via **Settings → Pages → Build and deployment → Source: GitHub Actions**.
 
