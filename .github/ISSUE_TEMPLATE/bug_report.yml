@@ -1,0 +1,75 @@
+name: Bug report
+description: Report a reproducible problem in wiki workflows, commands, or docs behavior.
+title: "[Bug]: "
+labels:
+  - bug
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: What is happening?
+      placeholder: Short description of the issue.
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem_why
+    attributes:
+      label: Problem & impact
+      description: Why does this matter? Who/what is affected?
+      placeholder: Explain impact on workflow or output quality.
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Provide exact steps so we can reproduce quickly.
+      placeholder: |
+        1. Run ...
+        2. Open ...
+        3. Observe ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      placeholder: What should have happened?
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      placeholder: What happened instead? Include error logs/messages.
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Local checks (if relevant)
+      options:
+        - label: python scripts/test_lint_wiki.py
+        - label: python scripts/test_atomic_write.py
+        - label: python scripts/test_detect_repetition.py
+        - label: python scripts/lint-wiki.py --all-workspaces --wiki-root .
+        - label: N/A (explain in Additional context)
+
+  - type: textarea
+    id: scope
+    attributes:
+      label: Workspace / scope
+      description: Which workspace/project is affected?
+      placeholder: workspace=wiki, project=...
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional context
+      description: Screenshots, traces, related PR/issue links, or hypothesis.

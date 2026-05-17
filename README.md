@@ -45,6 +45,15 @@ If Claude starts mixing context between repos, this setup gives you deterministi
 
 Not a good fit if you only need a static human-readable wiki without agent workflows.
 
+## Project Status
+
+This project is maintained on a **best-effort** basis.
+
+- Community contributions are welcome
+- If maintainer capacity changes, the project may move to maintenance mode or archive status
+
+Use is provided under the repository license ([MIT](LICENSE)) and is offered **"AS IS"**, without warranty.
+
 ## Support & Compatibility
 
 - **Runtime support**: Claude Code only (CLI and IDE extension).

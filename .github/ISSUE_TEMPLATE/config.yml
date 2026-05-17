@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Usage help
+    url: https://github.com/anthropics/claude-code
+    about: General Claude Code usage and docs.
+  - name: Claude Code bug reports
+    url: https://github.com/anthropics/claude-code/issues
+    about: Report Claude Code product issues here.

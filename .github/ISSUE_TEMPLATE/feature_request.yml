@@ -1,0 +1,67 @@
+name: Feature request
+description: Propose an improvement while preserving project spirit and knowledge-first workflow.
+title: "[Feature]: "
+labels:
+  - enhancement
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: What do you want to add or improve?
+      placeholder: Short feature request.
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem to solve
+      description: What pain point exists today?
+      placeholder: Describe current limitation.
+    validations:
+      required: true
+
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Desired outcome
+      description: What should success look like?
+      placeholder: Concrete expected outcome.
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed approach
+      description: Suggest an approach (high level, no need for final design).
+      placeholder: Steps, scope, constraints.
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      placeholder: Any options/trade-offs already considered.
+
+  - type: checkboxes
+    id: spirit
+    attributes:
+      label: Project spirit check
+      options:
+        - label: Aligns with knowledge-first workflow (reuse contracts/patterns before invention)
+        - label: Keeps contributor experience simple and practical
+        - label: Respects workspace isolation and avoids cross-workspace mixing
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance hints
+      description: How can we verify this is done?
+      placeholder: Tests, docs updates, expected behaviors.
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional context
+      description: Related issues/PRs, examples, references.
