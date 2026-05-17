@@ -1,24 +1,58 @@
 # Workspace Wiki
+**A workspace-isolated runtime knowledge engine for Claude Code.**
+
+Designed for teams running multiple projects/companies who need strict context isolation and repeatable agent behavior.
+
+If Claude starts mixing context between repos, this setup gives you deterministic, workspace-scoped retrieval and execution rules.
+
 > **Vietnamese:** [Onboarding (VI)](https://tanphuc16797.github.io/workspace-wiki/onboarding/index.html) · [Install Guide (VI)](https://tanphuc16797.github.io/workspace-wiki/onboarding/install.html)
 
 > **English:** [Onboarding (EN)](https://tanphuc16797.github.io/workspace-wiki/onboarding/index.en.html) · [Install Guide (EN)](https://tanphuc16797.github.io/workspace-wiki/onboarding/install.en.html)
 
 > **Quick start:** New to this repo? Go straight to [QUICKSTART.md](QUICKSTART.md) — from `git clone` to your first `/use-wiki` in about 5 minutes.
 
+## Try in 60 seconds
+
+```text
+1) Install once → run installer
+2) Bind codebase → /switch-workspace {name}
+3) Start task     → /use-wiki "your task"
+```
+
+Details are in [QUICKSTART.md](QUICKSTART.md).
+
+## Thesis (non-negotiables)
+
+1. **Workspace isolation is mandatory**  
+   Retrieval and context generation are scoped to the active workspace for the current codebase.
+
+2. **Runtime context over static documentation**  
+   This repo is built to feed agents with task-relevant context, not just to serve as a human-readable wiki.
+
+3. **Packs are cognitive scaffolds, not just templates**  
+   Packs are reusable reasoning modules that shape task framing, validation, and execution quality.
+
+4. **Claude Code-first support**  
+   Official support currently targets Claude Code only (CLI + IDE extension).
+
+5. **Deterministic knowledge priority**  
+   Contracts > Platform Patterns > Project Documentation > Domain Knowledge.
+
+Within this model: Engine defines shared invariants, Packs provide stack/use-case cognition, and Workspace carries company/project-specific knowledge.
+
+See [packs/README.md](packs/README.md) for the active pack catalog.
+
 ## Purpose
 
-*A workspace-isolated knowledge engine for Claude Code.*
-
-A single source of truth for system knowledge, consumed by both developers and AI agents, organized by workspace for users operating across multiple companies/projects.
+A single source of truth for system knowledge, consumed by both developers and Claude Code agents, organized by workspace for users operating across multiple companies/projects.
 
 ## Who This Is For
 
-- You use Claude Code across multiple projects/companies and need strict workspace-level knowledge isolation.
-- You are an engineer/tech lead and want an engine + slash commands + patterns so AI agents can retrieve context consistently.
-- You are a product manager, operations lead, business analyst, or domain expert who needs structured, reusable team knowledge without writing code every day.
-- You are a solo builder using Claude Code as a no-code/low-code IDE and want guided tool design before implementation.
-- You maintain onboarding, runbooks, and process docs and want AI outputs to follow team standards by default.
-- Not a good fit if you only need a static human-readable wiki without agent workflows.
+- Teams using Claude Code across multiple projects/companies and needing strict workspace-level isolation.
+- Engineers/tech leads who want reusable patterns + commands so agent output is consistent.
+- Product/ops/domain teams who need structured knowledge that agents can execute against.
+
+Not a good fit if you only need a static human-readable wiki without agent workflows.
 
 ## Current Support Scope
 
@@ -58,6 +92,8 @@ wiki-template/
 ```
 
 ## Packs (Stack-specific Knowledge)
+
+Packs are not just stack templates. They act as reusable reasoning modules that shape how tasks are framed, validated, and executed.
 
 Packs are stack/use-case knowledge layers between engine and workspace:
 
@@ -101,7 +137,7 @@ Each workspace includes:
 
 ### First-time setup (run once)
 
-**Short one-liners from release assets:**
+**Short one-liners from GitHub Release assets** (generated per release tag):
 
 ```bash
 curl -fsSL https://github.com/tanphuc16797/workspace-wiki/releases/latest/download/install.sh | sh
@@ -139,7 +175,7 @@ if ($actual -ne $expected.ToLower()) { throw "SHA256 mismatch for install.ps1" }
 .\install.ps1
 ```
 
-Or install from source in the current repository:
+Or install from source in the current repository (developer/local flow):
 
 ```bash
 bash scripts/install-to-claude.sh             # sync everything
@@ -217,7 +253,9 @@ This priority applies **within the active workspace scope only** — never mix k
 
 This repo uses workflow [deploy-pages.yml](.github/workflows/deploy-pages.yml):
 
-- Trigger: `push` to `main` or manual `workflow_dispatch`
+- Trigger:
+  - `push` to `main` when files under `onboarding/**` change
+  - manual `workflow_dispatch`
 - Build flow:
   1. run `bash scripts/package-release.sh`
   2. collect `onboarding/` and `release/` for Pages artifact

@@ -14,7 +14,7 @@ You need:
 - Bash shell (Windows: Git Bash or WSL).
 
 ```bash
-git clone <wiki-template-repo> ~/wiki   # or any path you prefer
+git clone https://github.com/tanphuc16797/workspace-wiki.git ~/wiki   # or any path you prefer
 cd ~/wiki
 ```
 
