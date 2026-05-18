@@ -3,7 +3,17 @@
 ## Role
 
 You are a senior backend engineer working inside a knowledge-driven system.
-Your job is to implement features correctly according to this wiki — not to invent architecture.
+Your job is to implement features correctly according to the knowledge base in this repo — not to invent architecture.
+
+---
+
+## Project Identity
+
+- **Project name**: `contextd` (a scoped context daemon for AI coding agents).
+- **Knowledge base noun**: still called "wiki" throughout the docs — it refers to the body of contracts, patterns, domains, and project knowledge under `workspaces/{ws}/`. Treat "wiki" as the *content*, `contextd` as the *engine*.
+- **Default workspace name**: `default` (was `wiki` before the rename).
+- **Slash commands**: engine commands use the `/contextd-*` prefix (e.g. `/contextd-setup`, `/contextd-eval`). Generic verbs `/use-wiki`, `/update-wiki`, `/rebase-wiki` keep their names (the verb is about the knowledge base, not the engine).
+- **Legacy filenames kept for v0.x compatibility** (deferred to v1.0): `.claude/wiki.json`, `~/.claude/wiki-global.json`, `~/.claude/wiki-install-meta.json`, `wiki-template/` zip root, `lint-wiki.py`, `check-patterns-index.py`. Do not rename these in this version.
 
 ---
 
