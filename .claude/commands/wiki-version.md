@@ -1,6 +1,6 @@
 # Wiki Version
 
-Hiển thị phiên bản Workspace Wiki đang cài trên máy user, đọc từ metadata local do installer ghi.
+Hiển thị phiên bản contextd đang cài trên máy user, đọc từ metadata local do installer ghi.
 
 ## Bước 1 — Đọc metadata install
 
@@ -21,7 +21,7 @@ curl -fsSL https://github.com/tanphuc16797/workspace-wiki/releases/latest/downlo
 In gọn theo format:
 
 ```text
-Workspace Wiki (installed)
+contextd (installed)
 - Repo: {repo}
 - Release tag: {release_tag}
 - Installed at (UTC): {installed_at_utc}

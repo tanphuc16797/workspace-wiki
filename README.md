@@ -1,9 +1,11 @@
-# Workspace Wiki
-**A workspace-isolated runtime knowledge engine for Claude Code.**
+# contextd
+**A scoped context daemon for AI coding agents.**
 
-Designed for teams running multiple projects/companies who need strict context isolation and repeatable agent behavior.
+Strict per-project knowledge isolation. Layered packs. Deterministic retrieval.
 
-If Claude starts mixing context between repos, this setup gives you deterministic, workspace-scoped retrieval and execution rules.
+Designed for developers running Claude Code across multiple projects/companies who need agents that don't mix context between repos. If Claude starts borrowing knowledge from the wrong codebase, `contextd` gives you scoped, repeatable, contract-driven context.
+
+> Repo currently lives at `tanphuc16797/workspace-wiki` on GitHub — rename to `contextd` is pending. URLs below still point to the legacy slug.
 
 ## Onboarding
 

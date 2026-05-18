@@ -1,13 +1,13 @@
 # Wiki Upgrade
 
-Nâng cấp Workspace Wiki trên máy user lên bản mới nhất từ GitHub release.
+Nâng cấp contextd trên máy user lên bản mới nhất từ GitHub release.
 
 ## CHECKPOINT 0 — Release note & cảnh báo
 
 In thông báo này trước khi làm gì khác:
 
 ```text
-⚠️ Bạn sắp upgrade Workspace Wiki lên bản mới nhất.
+⚠️ Bạn sắp upgrade contextd lên bản mới nhất.
 Tác động:
 - Sẽ cập nhật slash commands + agents trong ~/.claude/
 - Có thể thay đổi behavior theo rules/commands mới
