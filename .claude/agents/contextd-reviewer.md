@@ -87,32 +87,15 @@ APPROVED
 
 ## Phần B — Trace JSON (cuối output)
 
-````
-```json
-{
-  "run_id": "...",
-  "stage": "05-review",
-  "ts": "...",
-  "workspace_at_run": "...",
-  "verdict": "APPROVED | VIOLATIONS | INSUFFICIENT_CONTEXT",
-  "files_reviewed": ["src/api/users.ts"],
-  "violations": [
-    { "id": "V1", "rule": "rest-url-versioning",
-      "file_line": "src/api/users.ts:12",
-      "quote": "app.get('/users', ...)",
-      "severity": "blocking",
-      "fix": "thêm prefix /v1/" }
-  ],
-  "hallucinated_refs": [
-    { "ref": "platform/patterns/fake-pattern.md",
-      "found_in": "Knowledge Mapping section",
-      "reason": "không có trong 02-context.json#referenced_docs" }
-  ],
-  "violation_count": 1,
-  "hallucination_count": 1
-}
-```
-````
+Shape theo canonical schema [run-trace.schema.json](../../templates/run-trace.schema.json) `oneOf[3]` (stage `05-review`). KHÔNG restate fields.
+
+Quick recap:
+- Common: `run_id`, `stage: "05-review"`, `ts`, `workspace_at_run`.
+- `verdict`: `APPROVED | VIOLATIONS | INSUFFICIENT_CONTEXT`.
+- `files_reviewed[]`: list path.
+- `violations[]`: mỗi entry `{id, rule, file_line, quote?, severity, fix?}` (severity ∈ `blocking|non-blocking`).
+- `hallucinated_refs[]`: mỗi entry `{ref, found_in, reason?}`.
+- `violation_count`, `hallucination_count`: integer counts.
 
 Hook ghi `{cwd}/.claude/runs/{run_id}/05-review.json`.
 

@@ -6,6 +6,24 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Changed — Intent + trace schema = single source
+
+`templates/run-trace.schema.json` is now the only place that defines stage payload shape. Removed restated JSON examples from:
+
+- `agents/pipeline/task-to-docs-map.md` — replaced inline intent JSON with a pointer to schema + a clarification that **active packs are not persisted on `intent`** (planner reads `workspace.md ## Packs` directly), eliminating the earlier drift where this doc listed a `packs` field but schema.json didn't.
+- `agents/pipeline/multi-agent-pipeline.md` — replaced the Stage 1 intent JSON example with a schema pointer.
+- `.claude/agents/contextd-planner.md` — replaced the full output JSON example with a "quick recap" pointing to schema `oneOf[0]`.
+- `.claude/agents/contextd-context-selector.md` — same treatment for the `02-context` trace block.
+- `.claude/agents/contextd-reviewer.md` — same for `05-review`.
+
+Effect: adding/renaming a field now requires editing one schema file. Examples that used to drift independently across 5 files are gone.
+
+### Changed — Trim `.claude/commands/code-analyze.md` from 506 → 391 lines
+
+Bước 4 (Build snapshot) was duplicating section structure + config-guard logic already defined in `agents/pipeline/code-snapshot-conventions.md` (4.1–4.9 for `variant=code`, 4.A.1–4.A.10 for `variant=agentic-engine`, plus the 4.3.x config-guard sub-steps). Replaced with a variant dispatch table + a config-guard summary, both pointing at the conventions doc for full detail. The unique 4.10 redaction post-pass was preserved.
+
+Other long command files were reviewed but not trimmed — `evidence-{qa,apply,analyze}.md`, `obsidian-ingest.md`, `contextd-setup.md` carry genuine orchestration logic (state-machine transitions, router tables, checkpoint sub-step maps) that isn't duplicated elsewhere.
+
 ### Removed — Orphan pipeline stubs
 
 Deleted two migration stubs in `agents/pipeline/` that only existed to redirect historical evidence-snapshot citations:

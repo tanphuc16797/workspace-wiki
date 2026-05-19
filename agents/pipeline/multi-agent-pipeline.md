@@ -49,21 +49,9 @@ Final Output
 
 **Job**: Đọc `{ws}/patterns-index.md` + `{ws}/workspace.md`, suy ra patterns/contracts/domain/components cần dùng. KHÔNG đọc file pattern detail, KHÔNG sinh code.
 
-**Output schema**: Intent JSON theo `agents/pipeline/task-to-docs-map.md`:
-```json
-{
-  "workspace": "example-surgery",
-  "type": "implement_feature",
-  "domain": "surgery",
-  "components": ["kafka", "mqtt", "batch"],
-  "scope": "surgery-service",
-  "patterns_needed": ["kafka-event-processing", "mqtt-routing"],
-  "contracts_touched": ["mqtt-topic-contract"],
-  "missing_knowledge": []
-}
-```
+**Output schema**: Intent JSON — canonical shape ở [run-trace.schema.json](../../templates/run-trace.schema.json) `oneOf[0].intent`. Semantic + field resolution: [task-to-docs-map.md](task-to-docs-map.md).
 
-Nếu `missing_knowledge` không rỗng → main agent STOP, hỏi user, KHÔNG tự đoán.
+Nếu `intent.missing_knowledge` không rỗng → main agent STOP, hỏi user, KHÔNG tự đoán.
 
 ---
 

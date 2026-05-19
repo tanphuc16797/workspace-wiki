@@ -6,18 +6,9 @@ Single-stop spec cho 2 việc liên quan chặt: (1) parse user task thành **in
 
 ## 1. Intent schema
 
-```json
-{
-  "workspace": "{name}",
-  "type": "implement_feature | fix_bug | design | incident | review",
-  "domain": "{domain-folder-name} | null",
-  "components": [...],
-  "scope": "{project-folder-name} | global | null",
-  "packs": [...]
-}
-```
+**Canonical schema**: [`templates/run-trace.schema.json`](../../templates/run-trace.schema.json) — `oneOf[0]` (stage `01-planner`), under `properties.intent`. To add/remove/rename a field, edit schema.json first; this doc only documents **resolution semantics** for the field set, not the field list itself.
 
-Schema canonical cho `01-planner.json#intent` cũng nằm trong [`templates/run-trace.schema.json`](../../templates/run-trace.schema.json) (oneOf[0]). 2 nguồn phải đồng bộ.
+Active packs are surfaced separately in `02-context.referenced_docs[].category == "pitfalls"`, not as a field on `intent` (planner reads `workspace.md ## Packs` to know which to consult). This doc still discusses pack-driven retrieval below.
 
 ### Field resolution
 
@@ -32,7 +23,7 @@ Schema canonical cho `01-planner.json#intent` cũng nằm trong [`templates/run-
 - `scope` ∈ subdirs của `{ws}/projects/`.
 - Không khớp → `null`, ghi vào Knowledge Gaps trong `current-task.md`.
 
-**`packs`** = list pack active từ `{ws}/workspace.md ## Packs` (verify mỗi pack có `packs/{name}/pack.yaml`).
+**Active packs** = list pack từ `{ws}/workspace.md ## Packs` (verify mỗi pack có `packs/{name}/pack.yaml`). Planner đọc trực tiếp từ workspace.md; **không** persist vào `intent` JSON (giảm drift surface).
 
 ### Type definitions
 
@@ -126,16 +117,19 @@ Ví dụ với `pack-event-driven`:
 
 ### Intent (output của Stage 1 — contextd-planner)
 
-```json
-{
-  "workspace": "example-surgery",
-  "type": "implement_feature",
-  "domain": "surgery",
-  "components": ["kafka", "mqtt", "batch"],
-  "scope": "surgery-service",
-  "packs": ["pack-event-driven"]
-}
-```
+Full output shape: see [`run-trace.schema.json`](../../templates/run-trace.schema.json) `oneOf[0]`. Key fields populated cho ví dụ này:
+
+| Field | Value |
+|-------|-------|
+| `intent.workspace` | `example-surgery` |
+| `intent.type` | `implement_feature` |
+| `intent.domain` | `surgery` |
+| `intent.components` | `["kafka", "mqtt", "batch"]` |
+| `intent.scope` | `surgery-service` |
+| `intent.patterns_needed` | `["kafka-event-processing", "mqtt-routing"]` |
+| `intent.contracts_touched` | `["mqtt-topic-contract"]` |
+
+Planner cũng emit `patterns_verified[]` + `contracts_verified[]` + `unverified_count` (xem schema).
 
 ### Retrieved files (output của Stage 2 — contextd-context-selector)
 

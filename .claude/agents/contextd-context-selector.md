@@ -170,35 +170,12 @@ Nếu APPROVED kèm warnings, có thể thêm `## Warnings` block phía dưới 
 
 ## Phần B — Trace JSON (cuối output, đúng 1 fenced ```json block)
 
-````
-```json
-{
-  "run_id": "...",
-  "stage": "02-context",
-  "ts": "...",
-  "workspace_at_run": "...",
-  "context_file": ".claude/context/current-task.md",
-  "referenced_docs": [
-    { "category": "contract", "path": "platform/contracts/rest-url-versioning.md", "sections": ["full"] }
-  ],
-  "gaps": [
-    { "category": "pattern", "missing": "kafka-event-processing.md", "blocking_hint": true }
-  ],
-  "file_count": 1,
-  "gap_count": 1,
-  "total_chars": 12345,
-  "verdict": "APPROVED",
-  "issues": [],
-  "checks_summary": {
-    "patterns_verified": 2,
-    "contracts_verified": 1,
-    "components_covered": ["http"],
-    "blocking_gaps": 0,
-    "conflicts": 0
-  }
-}
-```
-````
+Shape theo canonical schema [run-trace.schema.json](../../templates/run-trace.schema.json) `oneOf[1]` (stage `02-context`). KHÔNG restate fields ở đây — đọc schema để biết required.
+
+Quick recap:
+- Common: `run_id`, `stage: "02-context"`, `ts`, `workspace_at_run`.
+- Retrieval: `context_file`, `referenced_docs[]` (mỗi entry `{category, path, sections}`; category ∈ contract|pattern|project|domain|decision|runbook|pitfalls), `gaps[]` (`{category, missing, blocking_hint}`), `file_count`, `gap_count`, `total_chars`.
+- Plan verdict: `verdict` (`APPROVED|BLOCK`, **required**), `issues[]` (`{id, category, severity, detail, evidence?}`), `checks_summary` (`patterns_verified`, `contracts_verified`, `components_covered[]`, `blocking_gaps`, `conflicts`).
 
 Caller dùng heuristic confirm: `Context written: {file_count} docs, {gap_count} gaps, verdict={verdict}`. PostToolUse hook ghi `{cwd}/.claude/runs/{run_id}/02-context.json`.
 

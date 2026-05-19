@@ -36,36 +36,13 @@ MISSING INPUT: effective_wiki_root | workspace
 
 # Output (BẮT BUỘC — chỉ 1 fenced json block, không kèm văn bản khác)
 
-Output là **đúng 1 fenced code block** theo schema [run-trace.schema.json](../../templates/run-trace.schema.json) stage `01-planner`:
+Output là **đúng 1 fenced ```json block** theo canonical schema [run-trace.schema.json](../../templates/run-trace.schema.json) `oneOf[0]` (stage `01-planner`). KHÔNG restate fields ở đây — đọc schema để biết required vs optional.
 
-````
-```json
-{
-  "run_id": "2026-05-08-141503-add-rest-endpoint",
-  "stage": "01-planner",
-  "ts": "2026-05-08T14:15:03Z",
-  "workspace_at_run": "example-surgery",
-  "intent": {
-    "workspace": "example-surgery",
-    "type": "implement_feature",
-    "domain": "surgery",
-    "components": ["http"],
-    "scope": "surgery-service",
-    "patterns_needed": ["redux-slice-state"],
-    "contracts_touched": ["rest-url-versioning"],
-    "approach": "...",
-    "missing_knowledge": []
-  },
-  "patterns_verified": [
-    { "name": "redux-slice-state", "exists": true, "path": "platform/patterns/redux-slice-state.md" }
-  ],
-  "contracts_verified": [
-    { "name": "rest-url-versioning", "exists": true, "path": "platform/contracts/rest-url-versioning.md" }
-  ],
-  "unverified_count": 0
-}
-```
-````
+Quick recap (xem schema cho chi tiết):
+- Common: `run_id` (format `{YYYY-MM-DD}-{HHMMSS}-{slug}`), `stage: "01-planner"`, `ts` (ISO-8601 UTC), `workspace_at_run`.
+- `intent` object: ít nhất `workspace`, `type`, `components`, `patterns_needed`. Optional: `domain`, `scope`, `contracts_touched`, `approach`, `missing_knowledge`.
+- `patterns_verified[]`, `contracts_verified[]`: mỗi entry `{name, exists, path}`.
+- `unverified_count`: integer = số entry `exists: false`.
 
 Caller (main agent) đọc field `intent` để pass cho stage tiếp theo. PostToolUse hook đọc cùng block, ghi `{cwd}/.claude/runs/{run_id}/01-planner.json`.
 

@@ -185,132 +185,17 @@ Wait user. `edit-scope`/`edit-bundle` → quay lại Bước 1/1.5. `cancel` →
 
 ### Single-repo mode
 
-**Variant dispatch**:
-- `variant=code` → tạo `raw.md` từ `templates/code-snapshot.md`, fill 10 section theo [code-snapshot-conventions.md Section 4](../../agents/pipeline/code-snapshot-conventions.md). Bước 4.1–4.10 dưới đây áp dụng.
-- `variant=agentic-engine` → tạo `raw.md` từ `templates/agentic-engine-snapshot.md`, fill 10 section theo [code-snapshot-conventions.md Section 12.4](../../agents/pipeline/code-snapshot-conventions.md). Bước 4.A.1–4.A.10 dưới đây áp dụng.
+**Variant dispatch** — fill `raw.md` theo conventions doc (single source of truth cho section structure + parsing rules + config guard):
 
-#### Variant=code
+| Variant | Template | Conventions reference |
+|---------|----------|----------------------|
+| `code` (runtime codebase) | `templates/code-snapshot.md` | [code-snapshot-conventions.md Section 4](../../agents/pipeline/code-snapshot-conventions.md) — 10 section spec (project meta, deps, configs, REST, consumers, services, DB, public APIs, git, notes) |
+| `agentic-engine` (markdown/agents repo) | `templates/agentic-engine-snapshot.md` | [code-snapshot-conventions.md Section 12.4](../../agents/pipeline/code-snapshot-conventions.md) — variant-specific 10 section spec (engine meta, MCP + deps, configs, slash commands, sub-agents, pipeline modules, templates, hooks, git, notes) |
 
-### 4.1 — Section 1 (Project metadata)
-- name, version, build tool, language(s), top-level dirs (1 cấp), README excerpt (≤ 200 chars).
-- Cite: `(pom.xml:L..)` / `(package.json:L..)` / `(README.md:L..)`.
-
-### 4.2 — Section 2 (Dependencies)
-- Parse `pom.xml` `<dependencies>` thành table production/test/build.
-- Parse `package.json` `dependencies`/`devDependencies`.
-- Parse `build.gradle` `dependencies { ... }` block.
-- Parse `Cargo.toml` `[dependencies]`, `[dev-dependencies]`.
-- Parse `go.mod` `require ( ... )` block.
-- Mỗi row: `{group} | {artifact} | {version} | {purpose-heuristic} | (file:L..)`.
-
-### 4.3 — Section 3 (Configs)
-Guard đầy đủ: [code-snapshot-conventions.md Section 6](../../agents/pipeline/code-snapshot-conventions.md).
-
-**Mặc định: tất cả config bị block.** Chỉ đọc khi user pass `--allow-configs`.
-
-**4.3.1 — Kiểm tra flag**:
-- `--allow-configs` KHÔNG set → ghi `_(Configs skipped — rerun with --allow-configs to include)_` vào Section 3. Kết thúc.
-- `--allow-configs` set → tiếp tục 4.3.2.
-
-**4.3.2 — Hard blocklist check** (load engine list + `{ws}/evidence/STORAGE.md` nếu có):
-- Khớp → ghi `[HARD-BLOCKED: {path}]`, không đọc. Hard-blocked không có flag nào bypass.
-- Ví dụ blocked: `.env`, `*-prod.yaml`, `*.key`, `*.pem`, `vault.yaml`, file trong `secrets/`.
-
-**4.3.3 — AskUserQuestion** (file còn lại sau blocklist):
-- Hiển thị danh sách + hỏi user chọn file nào include (format tại `code-snapshot-conventions.md Section 6.1 Tầng 2`).
-- File không được chọn → `[SKIPPED-BY-USER: {path}]`.
-
-**4.3.4 — Redact** (file user đã chọn):
-- Tokens, passwords, keys, URLs có credentials → `<REDACTED-SECRET>`.
-- Cite: `(path/to/file.yaml:L..-L..)`.
-
-**4.3.5 — Guard log** (cuối Section 3):
-- Append "Config guard log": included / hard-blocked / skipped-by-user.
-
-### 4.4 — Section 4 (REST endpoints)
-- Grep markers theo `code-snapshot-conventions.md` Section 9 (workspace có thể bổ sung qua `{ws}/evidence/STORAGE.md`).
-- Default Java/Spring: `@RestController`, `@RequestMapping`, `@GetMapping`/`@PostMapping`/`@PutMapping`/`@DeleteMapping`, `@PatchMapping`.
-- Default Node/Express: `app\.(get|post|put|delete|patch)\(`, `router\.(...)`.
-- NestJS: `@Controller`, `@Get`, `@Post`, ...
-- FastAPI: `@app\.(get|post)`, `@router\.(...)`.
-- Build table: `Method | Path | Handler class:method | Auth | Citation`.
-
-### 4.5 — Section 5 (Message consumers)
-- Kafka: `@KafkaListener`, `@StreamListener`, KafkaConsumer instantiation.
-- MQTT: subscribe calls (Paho `client.subscribe`, Mosquitto, etc).
-- RabbitMQ: `@RabbitListener`.
-- SQS: `@SqsListener`.
-- Build table per protocol: `Topic | Group/Queue | Consumer class:method | Citation`.
-
-### 4.6 — Section 6 (Services & components)
-- `@Service`, `@Component`, `@Repository`, `@Configuration`.
-- TypeScript/Nest: `@Injectable`, `@Module`.
-- Build table: `Class FQN | Stereotype | Responsibility (1 line) | Citation`.
-- Responsibility 1-line: từ class-level Javadoc nếu có; else `_(no doc)_`.
-
-### 4.7 — Section 7 (DB schema)
-- Entities: `@Entity`, `@Table`.
-- Repositories: interfaces extends `JpaRepository`/`CrudRepository`.
-- Migrations: list file trong `src/main/resources/db/migration/` (Flyway) hoặc `liquibase/` (Liquibase) hoặc `migrations/` (general).
-- 2 sub-table: Entities + Migrations.
-
-### 4.8 — Section 8 (Public APIs)
-- Class signatures package-public (top-level interfaces, public classes có annotation `@PublicApi` hoặc tương đương).
-- Code block 1 cho mỗi class quan trọng (≤ 5 class chính). KHÔNG dump toàn bộ method body — chỉ signature.
-
-### 4.9 — Section 9 (Git summary)
-- Last 50 commits oneline: `git -C {repo_path} log --oneline -50` → trim sha tới 7 chars.
-- Top contributors: `git -C {repo_path} shortlog -sn --since="1 year ago"` → top 10 rows.
-- Notable commits: grep commits 1 năm gần nhất chứa từ khóa `^(feat|fix|chore|refactor)` HOẶC `(decided|chose|switched|deprecat|migrat|drop)`. Limit 20.
-- **Redact emails**: tên giữ, email → `<REDACTED-EMAIL>`.
-
-#### Variant=agentic-engine
-
-### 4.A.1 — Section 1 (Engine metadata)
-- name (từ README first heading / package.json#name / dir name), purpose excerpt từ `README.md` hoặc `CLAUDE.md` (≤ 300 chars), top-level dirs (1 cấp), Claude Code version target nếu README/CLAUDE.md có ghi.
-- Cite: `(README.md:L..)` / `(CLAUDE.md:L..)`.
-
-### 4.A.2 — Section 2 (Dependencies)
-- **MCP servers**: parse `mcp.json` / `.mcp.json` nếu tồn tại → table `Name | Transport | Command/URL | Role | Citation`. Skip nếu không có file → `_(none)_`.
-- **Runtime / script-tool deps**: parse `package.json` / `pyproject.toml` / `requirements.txt` nếu có (giống 4.2 cho variant=code) → table.
-- **External integrations** (inferred): grep commands/agents cho tên external systems (Obsidian, Confluence, Linear, Slack, GitHub, web fetch). Mỗi mention → row `{integration} — used by ({path}:L..)`.
-
-### 4.A.3 — Section 3 (Configs)
-Cùng guard logic Section 6 conventions (4.3.1–4.3.5). Default config files trong scope agentic-engine: `wiki.json` schemas, `wiki-global.json`, `settings.json`, `.claude/settings.json`, `.claude/settings.local.json`. Hard blocklist (Section 6 conventions) áp dụng — `*.local.json` thường không bị block nhưng cần redact tokens.
-
-### 4.A.4 — Section 4 (Slash commands)
-- Enumerate `.claude/commands/*.md` trong scope.
-- Mỗi file: parse heading 1 (purpose), parse `## Input` table nếu có (args), parse outputs từ "Sẽ tạo" / "Bước N" mô tả file changes.
-- Build table: `Name | Purpose (1 line) | Inputs (args) | Outputs (state/file changes) | Mode (interactive/auto) | Citation`.
-
-### 4.A.5 — Section 5 (Sub-agents & system prompts)
-- Enumerate `.claude/agents/*.md` (sub-agents) + `agents/**/*.md` (system prompts, agent definitions).
-- Parse frontmatter nếu có (vd `name`, `description`, `tools`, `model`).
-- Build table: `Name | Role (1 line) | Tools allowed | When to use | Citation`. Nếu không có frontmatter → fallback to first heading + intro paragraph.
-
-### 4.A.6 — Section 6 (Pipeline stages / Modules)
-- Nếu `agents/pipeline/*.md` tồn tại → list mỗi stage doc với role + thứ tự suy ra từ tên file hoặc cross-reference (vd `task-to-docs-map → task-to-docs-map → context-filter → validator-rules`).
-- Else → list functional modules: top-level dirs trong scope không phải `.claude/`/`templates/` — vd `workspaces/`, `domains/`, `platform/` — mỗi dir → row.
-- Build table: `Order | Stage/Module | Role | Citation`.
-
-### 4.A.7 — Section 7 (Templates)
-- Enumerate `templates/*` files trong scope.
-- Mỗi file: detect output artifact type từ extension + filename (vd `service.md` → markdown service doc; `bundle.yaml` → yaml manifest; `evidence-source.yaml` → yaml config).
-- Detect "used by": grep tên file ngược trong `.claude/commands/` và `agents/` → list refs.
-- Build table: `Name | Output artifact type | Used by | Citation`.
-
-### 4.A.8 — Section 8 (Hooks & settings)
-- Chỉ chạy nếu Section 3 đã có `settings.json` được include (qua `--allow-configs`). Else → `_(not analyzed — pass --allow-configs)_`.
-- Parse `hooks` block: `Event | Matcher | Command | Purpose | Citation`.
-- Parse `permissions.allow` / `permissions.deny`: `Type | Pattern | Citation`.
-- Parse env vars khai báo: `Name | Purpose | Citation`.
-
-### 4.A.9 — Section 9 (Git summary)
-- Repos không git → ghi `_(unmanaged — no git history. git_sha = unmanaged-{...})_`. Skip table.
-- Else giống 4.9: last 50 commits, top contributors, notable commits.
-
-### 4.A.10 — Section 10 (Notes)
-- Observations: orphaned commands không có agent reference, agents tham chiếu file không tồn tại, hooks không match command nào, pipeline stage không có downstream consumer.
+**Config guard** (Section 3 of either variant) — full logic in [code-snapshot-conventions.md Section 6](../../agents/pipeline/code-snapshot-conventions.md). Summary:
+- Default: all config files blocked.
+- `--allow-configs` set → hard blocklist (`.env`, `*-prod.yaml`, `*.key`, `*.pem`, `vault.yaml`, `secrets/*`) still blocks unconditionally; remaining files prompted via AskUserQuestion; selected files redacted (`<REDACTED-SECRET>`) before include.
+- Section 3 ends with a "Config guard log" line listing included / hard-blocked / skipped-by-user counts.
 
 ### 4.10 — Redaction post-pass (cả 2 variants)
 
