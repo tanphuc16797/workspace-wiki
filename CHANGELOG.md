@@ -100,7 +100,7 @@ This release rebrands the project. Project name and slash-command prefix change;
 - Display name `Workspace Wiki` → `contextd` in README, CLAUDE.md, onboarding HTML (VI + EN), GitHub Pages redirect title, and `/contextd-upgrade` / `/contextd-version` command docs.
 - New tagline: *"A scoped context daemon for AI coding agents."*
 - Added `## Project Identity` section to CLAUDE.md so agents read the new naming on every turn.
-- GitHub repo URLs intentionally **unchanged** in this version — still `tanphuc16797/workspace-wiki`. Repo rename and release tagging under the new name are deferred to a follow-up.
+- GitHub repo URLs intentionally **unchanged** in this version — still `tanphuc16797/workspace-wiki`. Repo rename and release tagging under the new name were deferred to a follow-up (completed in a later release).
 
 #### Default workspace rename
 - Folder `workspaces/wiki/` → `workspaces/default/` (full git rename — history preserved).
@@ -191,4 +191,4 @@ No data migration is required for evidence, contracts, patterns, decisions, or r
 
 ---
 
-For history before this rebrand, see [git log](https://github.com/tanphuc16797/workspace-wiki/commits/main).
+For history before this rebrand, see [git log](https://github.com/philngt/contextd/commits/main).

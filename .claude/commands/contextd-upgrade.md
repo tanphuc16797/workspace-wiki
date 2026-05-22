@@ -26,9 +26,9 @@ Khuyến nghị chạy backup trước bằng `/contextd-backup` để có rollb
 
 Thông báo rõ lệnh sẽ chạy:
 - Linux/macOS:
-  `curl -fsSL https://github.com/tanphuc16797/workspace-wiki/releases/latest/download/install.sh | sh`
+  `curl -fsSL https://github.com/philngt/contextd/releases/latest/download/install.sh | sh`
 - Windows PowerShell:
-  `iwr https://github.com/tanphuc16797/workspace-wiki/releases/latest/download/install.ps1 -UseBasicParsing | iex`
+  `iwr https://github.com/philngt/contextd/releases/latest/download/install.ps1 -UseBasicParsing | iex`
 
 Hỏi user xác nhận chạy upgrade ngay bây giờ. Chỉ chạy khi user đồng ý.
 

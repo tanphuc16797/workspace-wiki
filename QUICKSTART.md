@@ -14,8 +14,8 @@ You need:
 - Bash shell (Windows: Git Bash or WSL).
 
 ```bash
-git clone https://github.com/tanphuc16797/workspace-wiki.git ~/wiki   # or any path you prefer
-cd ~/wiki
+git clone https://github.com/philngt/contextd.git ~/contextd   # or any path you prefer
+cd ~/contextd
 ```
 
 ---

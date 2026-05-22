@@ -5,13 +5,12 @@ Strict per-project knowledge isolation. Layered packs. Deterministic retrieval.
 
 Designed for developers running Claude Code across multiple projects/companies who need agents that don't mix context between repos. If Claude starts borrowing knowledge from the wrong codebase, `contextd` gives you scoped, repeatable, contract-driven context.
 
-> Repo currently lives at `tanphuc16797/workspace-wiki` on GitHub — rename to `contextd` is pending. URLs below still point to the legacy slug.
 
 ## Onboarding
 
-> **Vietnamese:** [Onboarding (VI)](https://tanphuc16797.github.io/workspace-wiki/onboarding/index.html) · [Install Guide (VI)](https://tanphuc16797.github.io/workspace-wiki/onboarding/install.html)
+> **Vietnamese:** [Onboarding (VI)](https://philngt.github.io/contextd/onboarding/index.html) · [Install Guide (VI)](https://philngt.github.io/contextd/onboarding/install.html)
 
-> **English:** [Onboarding (EN)](https://tanphuc16797.github.io/workspace-wiki/onboarding/index.en.html) · [Install Guide (EN)](https://tanphuc16797.github.io/workspace-wiki/onboarding/install.en.html)
+> **English:** [Onboarding (EN)](https://philngt.github.io/contextd/onboarding/index.en.html) · [Install Guide (EN)](https://philngt.github.io/contextd/onboarding/install.en.html)
 
 ## Thesis (non-negotiables)
 
@@ -101,20 +100,20 @@ See [packs/README.md](packs/README.md) for the full catalog.
 **Short one-liners from GitHub Release assets** (generated per release tag):
 
 ```bash
-curl -fsSL https://github.com/tanphuc16797/workspace-wiki/releases/latest/download/install.sh | sh
+curl -fsSL https://github.com/philngt/contextd/releases/latest/download/install.sh | sh
 ```
 
 PowerShell (Windows):
 
 ```powershell
-iwr https://github.com/tanphuc16797/workspace-wiki/releases/latest/download/install.ps1 -UseBasicParsing | iex
+iwr https://github.com/philngt/contextd/releases/latest/download/install.ps1 -UseBasicParsing | iex
 ```
 
 ### Secure install (verify SHA256 before run)
 
 ```bash
 TAG="vX.Y.Z"
-BASE_URL="https://github.com/tanphuc16797/workspace-wiki/releases/download/${TAG}"
+BASE_URL="https://github.com/philngt/contextd/releases/download/${TAG}"
 curl -fL -o install.sh "${BASE_URL}/install.sh"
 curl -fL -o SHA256SUMS.txt "${BASE_URL}/SHA256SUMS.txt"
 grep ' install.sh$' SHA256SUMS.txt | shasum -a 256 -c -
@@ -125,7 +124,7 @@ PowerShell (Windows):
 
 ```powershell
 $Tag = "vX.Y.Z"
-$BaseUrl = "https://github.com/tanphuc16797/workspace-wiki/releases/download/$Tag"
+$BaseUrl = "https://github.com/philngt/contextd/releases/download/$Tag"
 Invoke-WebRequest "$BaseUrl/install.ps1" -OutFile "install.ps1"
 Invoke-WebRequest "$BaseUrl/SHA256SUMS.txt" -OutFile "SHA256SUMS.txt"
 $expected = (Select-String -Path .\SHA256SUMS.txt -Pattern ' install.ps1$').Line.Split(' ')[0].Trim()

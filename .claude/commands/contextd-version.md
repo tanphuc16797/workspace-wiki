@@ -13,7 +13,7 @@ Nếu không tồn tại, in:
 ```text
 Chưa tìm thấy metadata cài đặt tại ~/.claude/wiki-install-meta.json.
 Hãy chạy lại lệnh cài đặt từ release mới nhất:
-curl -fsSL https://github.com/tanphuc16797/workspace-wiki/releases/latest/download/install.sh | sh
+curl -fsSL https://github.com/philngt/contextd/releases/latest/download/install.sh | sh
 ```
 
 ## Bước 2 — In kết quả
@@ -36,5 +36,5 @@ Nếu có `release_tag`, in thêm:
 
 ```text
 Để cập nhật bản mới nhất:
-curl -fsSL https://github.com/tanphuc16797/workspace-wiki/releases/latest/download/install.sh | sh
+curl -fsSL https://github.com/philngt/contextd/releases/latest/download/install.sh | sh
 ```
